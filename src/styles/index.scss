@@ -1,0 +1,24 @@
+@import 'loader';
+
+#app {
+  width: 70%;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.table-info {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.col-head {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.subject-info {
+  margin-top: 20px;
+}
