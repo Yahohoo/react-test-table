@@ -5,12 +5,14 @@ import SubjectInfo from './SubjectInfo'
 
 const PAGE_SIZE = 30
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      data: [], // поменять на пустой массив
+      data: [],
+      sortCol: null,
+      reverseSort: false,
       filterValue: null,
       failedDataFetch: false,
       loading: false
@@ -73,6 +75,33 @@ export default class App extends Component {
     })
   }
 
+  getSortedData() {
+    const field = this.state.sortCol
+
+    const data = this.state.filterValue
+      ? this.getFilteredData()
+      : this.state.data
+
+    if (!field) return data
+
+    const reverse = this.state.reverseSort
+
+    data.sort((a, b) => {
+      if (a[field] === b[field]) return 0
+
+      var res = a[field] > b[field] ? 1 : -1
+      if (reverse) res = -res
+
+      return res
+    })
+
+    return data
+  }
+
+  setSortProps = (sortCol, reverseSort) => {
+    this.setState({ sortCol, reverseSort: !reverseSort })
+  }
+
   getStatus() {
     if (this.state.failedDataFetch) return 'failed'
     if (this.state.loading) return 'loading'
@@ -85,9 +114,13 @@ export default class App extends Component {
   }
 
   render() {
-    const data = this.state.filterValue
-      ? this.getFilteredData()
-      : this.state.data
+    const data = this.getSortedData()
+
+    const sortProps = {
+      sortCol: this.state.sortCol,
+      reverseSort: this.state.reverseSort,
+      sort: this.setSortProps
+    }
 
     return (
       <div className='container' id='app'>
@@ -96,6 +129,7 @@ export default class App extends Component {
         <ControlPanel setData={this.setData} searchFor={this.setFilter} />
         {/* Key нужен, чтобы сбрасывать состояние таблицы, если меняется набор данных */}
         <Table
+          sortProps={sortProps}
           key={Date.now()}
           pagesNum={this.getPagesNum(data)}
           status={this.getStatus()}
@@ -106,3 +140,5 @@ export default class App extends Component {
     )
   }
 }
+
+export default App

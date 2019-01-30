@@ -14,10 +14,8 @@ class Table extends Component {
     super(props)
 
     this.state = {
-      sortCol: null,
-      reverseSort: false,
       currentPage: 1,
-      selected: null
+      selectedRow: null
     }
   }
 
@@ -28,44 +26,20 @@ class Table extends Component {
     return this.props.data.slice(startIdx, startIdx + PAGE_SIZE)
   }
 
-  getSortedData() {
-    const field = this.state.sortCol
-    const data = this.getPageData()
-
-    if (!field) return data
-
-    const reverse = this.state.reverseSort
-
-    data.sort((a, b) => {
-      if (a[field] === b[field]) return 0
-
-      var res = a[field] > b[field] ? 1 : -1
-      if (reverse) res = -res
-
-      return res
-    })
-
-    return data
-  }
-
-  setSortProps = (sortCol, reverseSort) => {
-    this.setState({ sortCol, reverseSort: !reverseSort })
-  }
-
   changePage = num => {
     this.setState({ currentPage: num })
   }
 
   changeSelected = row => {
-    this.setState({ selected: row })
+    this.setState({ selectedRow: row })
   }
 
   getColons() {
     return FIELDS.map(field => {
       var reverse
 
-      if (field === this.state.sortCol) {
-        reverse = this.state.reverseSort
+      if (field === this.props.sortProps.sortCol) {
+        reverse = this.props.sortProps.reverseSort
       } else {
         reverse = false
       }
@@ -75,7 +49,7 @@ class Table extends Component {
   }
 
   render() {
-    const data = this.getSortedData()
+    const data = this.getPageData()
     const colons = this.getColons()
 
     const status =
@@ -86,8 +60,11 @@ class Table extends Component {
     return (
       <div>
         <table className='table is-fullwidth is-bordered is-narrow is-hoverable'>
-          {data && (
-            <TableHead colons={colons} setSortProps={this.setSortProps} />
+          {Boolean(data.length) && (
+            <TableHead
+              colons={colons}
+              setSortProps={this.props.sortProps.sort}
+            />
           )}
           <TableBody
             status={status}
@@ -100,7 +77,9 @@ class Table extends Component {
           currentPage={this.state.currentPage}
           changePage={this.changePage}
         />
-        {this.state.selected && <SubjectInfo subject={this.state.selected} />}
+        {this.state.selectedRow && (
+          <SubjectInfo subject={this.state.selectedRow} />
+        )}
       </div>
     )
   }
