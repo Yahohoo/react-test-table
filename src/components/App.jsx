@@ -15,12 +15,9 @@ export default class App extends Component {
       failedDataFetch: false,
       loading: false
     }
-
-    this.setData = this.setData.bind(this)
-    this.setFilter = this.setFilter.bind(this)
   }
 
-  async setData(url) {
+  setData = async url => {
     this.setState({ data: [] })
 
     const data = await this.fetchData(url)
@@ -35,6 +32,10 @@ export default class App extends Component {
     }
 
     this.setState(state)
+  }
+
+  setFilter = async value => {
+    this.setState({ filterValue: value.toLowerCase() })
   }
 
   async fetchData(url) {
@@ -77,10 +78,6 @@ export default class App extends Component {
     if (this.state.loading) return 'loading'
 
     return 'normal'
-  }
-
-  setFilter(value) {
-    this.setState({ filterValue: value.toLowerCase() })
   }
 
   getPagesNum(data) {

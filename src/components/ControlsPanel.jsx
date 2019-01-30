@@ -13,11 +13,9 @@ class ControlsPanel extends Component {
     this.state = {
       searchRequest: ''
     }
-
-    this.changeSearchRequest = this.changeSearchRequest.bind(this)
   }
 
-  changeSearchRequest(event) {
+  changeSearchRequest = event => {
     this.setState({
       searchRequest: event.target.value
     })
