@@ -5,44 +5,19 @@ const TableInfo = props => {
 
   switch (props.status) {
     case 'failed':
-      bodyContent = (
-        <div className='table-info has-text-warning is-size-3'>
-          Данные не получилось загрузить
-        </div>
-      )
+      bodyContent = loadingFailedMessage
       break
 
     case 'loading':
-      bodyContent = (
-        <div className='table-info'>
-          <div className='lds-roller'>
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-            <div />
-          </div>
-        </div>
-      )
+      bodyContent = loadingInProcessMessage
       break
 
     case 'empty':
-      bodyContent = (
-        <div className='table-info has-text-info is-size-3'>
-          Пока нет данных для отображения
-        </div>
-      )
+      bodyContent = noDataMessage
       break
 
     default:
-      bodyContent = (
-        <div className='table-info has-text-danger is-size-3'>
-          Что-то пошло не так
-        </div>
-      )
+      bodyContent = unexpectedProblemMessage
   }
 
   return (
@@ -51,5 +26,38 @@ const TableInfo = props => {
     </tr>
   )
 }
+
+const loadingFailedMessage = (
+  <div className='table-info has-text-warning is-size-3'>
+    Данные не получилось загрузить
+  </div>
+)
+
+const loadingInProcessMessage = (
+  <div className='table-info'>
+    <div className='lds-roller'>
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+    </div>
+  </div>
+)
+
+const noDataMessage = (
+  <div className='table-info has-text-info is-size-3'>
+    Пока нет данных для отображения
+  </div>
+)
+
+const unexpectedProblemMessage = (
+  <div className='table-info has-text-danger is-size-3'>
+    Что-то пошло не так
+  </div>
+)
 
 export default TableInfo
