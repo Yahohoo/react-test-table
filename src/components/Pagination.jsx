@@ -14,19 +14,7 @@ const Pagination = props => {
   const currentPage = props.currentPage
   const changePage = props.changePage
 
-  const neighs = []
-
-  if (currentPage - 1 > 1) {
-    neighs.push(currentPage - 1)
-  }
-
-  if (currentPage !== 1 && currentPage !== pagesNum) {
-    neighs.push(currentPage)
-  }
-
-  if (currentPage + 1 < pagesNum) {
-    neighs.push(currentPage + 1)
-  }
+  const neighs = getNeighbors(currentPage, pagesNum)
 
   return (
     <nav
@@ -70,6 +58,27 @@ const Pagination = props => {
       </button>
     </nav>
   )
+}
+
+// Возвращает группу переключателей страниц в виде [current - 1,  current, current + 1]
+// Не включает первую и последнюю страницы
+
+const getNeighbors = (currentPage, pagesNum) => {
+  const neighs = []
+
+  if (currentPage - 1 > 1) {
+    neighs.push(currentPage - 1)
+  }
+
+  if (currentPage !== 1 && currentPage !== pagesNum) {
+    neighs.push(currentPage)
+  }
+
+  if (currentPage + 1 < pagesNum) {
+    neighs.push(currentPage + 1)
+  }
+
+  return neighs
 }
 
 export default Pagination
